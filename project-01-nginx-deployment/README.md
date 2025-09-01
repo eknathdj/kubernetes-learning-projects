@@ -28,4 +28,5 @@ Deploy a simple Nginx application on Kubernetes, expose it using a Service, and 
 
 ✅ Expected Result
 Nginx default page loads in browser.
-5 replicas visible via kubectl get pods.
+
+5. replicas visible via kubectl get pods.
