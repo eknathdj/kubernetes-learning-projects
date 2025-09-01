@@ -30,3 +30,7 @@ Deploy a simple Nginx application on Kubernetes, expose it using a Service, and 
 Nginx default page loads in browser.
 
 5. replicas visible via kubectl get pods.
+
+6. 🧹 Cleanup
+   kubectl delete -f nginx-deployment.yaml
+   kubectl delete -f nginx-service.yaml
