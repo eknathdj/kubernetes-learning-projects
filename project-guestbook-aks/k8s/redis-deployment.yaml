@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guestbook-redis
+  template:
+    metadata:
+      labels:
+        app: guestbook-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:6-alpine
+          ports:
+            - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: guestbook-redis
+spec:
+  selector:
+    app: guestbook-redis
+  ports:
+    - port: 6379
+      targetPort: 6379
+  type: ClusterIP
