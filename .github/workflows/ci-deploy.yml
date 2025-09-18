@@ -52,12 +52,19 @@ jobs:
         cluster-name: ${{ secrets.AKS_NAME }}
         resource-group: ${{ secrets.RESOURCE_GROUP }}
 
-    - name: Install Helm
-      uses: azure/setup-helm@v1
-
-    - name: Update Helm values and deploy
+    - name: Install Helm v3
       run: |
-        helm upgrade --install ${{ env.CHART_NAME }} k8s/helm/${{ env.CHART_NAME }}           --namespace ${{ env.NAMESPACE }} --create-namespace           --set image.repository=${{ env.REGISTRY }}/demo-app           --set image.tag=${{ github.sha }}
+        curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+
+    - name: Deploy with Helm
+      run: |
+        helm upgrade --install demo-chart k8s/helm/demo-chart \
+          --namespace demo --create-namespace \
+          --set image.repository=${{ env.REGISTRY }}/demo-app \
+          --set image.tag=05965dcb5f816499d043aab198266ef95430ba93
+
+
     - name: Run smoke test
       run: |
         kubectl wait --for=condition=available --timeout=120s deployment/${{ env.CHART_NAME }} -n ${{ env.NAMESPACE }} || true
