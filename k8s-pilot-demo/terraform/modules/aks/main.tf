@@ -3,8 +3,14 @@ variable "location" { type = string }
 variable "cluster_name" { type = string }
 variable "vnet_subnet_id" { type = string }
 variable "acr_id" { type = string }
-variable "node_count" { type = number default = 2 }
-variable "node_vm_size" { type = string default = "Standard_DS2_v2" }
+variable "node_count" { 
+    type = number 
+    default = 2 
+}
+variable "node_vm_size" { 
+    type = string 
+    default = "Standard_DS2_v2" 
+}
 
 data "azurerm_client_config" "current" {}
 
@@ -21,9 +27,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vnet_subnet_id = var.vnet_subnet_id
   }
 
-  role_based_access_control {
-    enabled = true
-  }
+  role_based_access_control_enabled = true
 
   identity {
     type = "SystemAssigned"
@@ -33,12 +37,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     network_plugin    = "azure"
     load_balancer_sku = "standard"
     network_policy    = "calico"
-  }
-
-  addon_profile {
-    oms_agent {
-      enabled = false
-    }
   }
 
   tags = {

@@ -31,6 +31,8 @@ module "aks" {
   cluster_name        = var.cluster_name
   vnet_subnet_id      = module.network.subnet_id
   acr_id              = module.acr.acr_id
+  node_count = 2
+  node_vm_size = "Standard_DS2_v2"
 }
 
 output "kubeconfig_command" {

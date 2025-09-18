@@ -32,7 +32,7 @@ jobs:
         tags: ${{ env.REGISTRY }}/demo-app:${{ github.sha }}
 
     - name: Trivy Scan
-      uses: aquasecurity/trivy-action@v0.0.20
+      uses: aquasecurity/trivy-action@0.28.0
       with:
         image-ref: ${{ env.REGISTRY }}/demo-app:${{ github.sha }}
         exit-code: 1
