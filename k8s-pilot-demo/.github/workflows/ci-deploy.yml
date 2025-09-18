@@ -2,6 +2,10 @@ name: CI Deploy
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'k8s/helm/demo-chart/**'
+      - '.github/workflows/ci-deploy.yml'
+      - 'app/**'
 env:
   REGISTRY: ${{ secrets.REGISTRY }}
   CHART_NAME: demo-chart
