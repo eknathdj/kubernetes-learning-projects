@@ -13,7 +13,7 @@ module "acr" {
   source              = "../modules/acr"
   resource_group_name = var.resource_group_name
   location            = var.location
-  acr_name            = "${var.cluster_name}acr"
+  acr_name            = "${var.cluster_name}acr202512"
   sku                 = "Standard"
 }
 
@@ -31,8 +31,8 @@ module "aks" {
   cluster_name        = var.cluster_name
   vnet_subnet_id      = module.network.subnet_id
   acr_id              = module.acr.acr_id
-  node_count = 2
-  node_vm_size = "Standard_DS2_v2"
+  node_count          = 2
+  node_vm_size        = "Standard_DS2_v2"
 }
 
 output "kubeconfig_command" {
