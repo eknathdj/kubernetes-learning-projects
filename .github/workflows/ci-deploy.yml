@@ -60,7 +60,7 @@ jobs:
       run: |
         pwd
         ls -la
-        ls -la k8s/helm/demo-chart
+        ls -la k8s-pilot-demo/helm/demo-chart
 
     - name: Helm Deploy
       working-directory: ${{ github.workspace }}
