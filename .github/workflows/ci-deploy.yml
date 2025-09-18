@@ -60,15 +60,15 @@ jobs:
       run: |
         pwd
         ls -la
-        ls -la /k8s-pilot-demo/k8s/helm/demo-chart
+        ls -la k8s-pilot-demo/k8s/helm/demo-chart
 
     - name: Helm Deploy
-      working-directory: ${{ github.workspace }}
+      working-directory: ${{ github.workspace }}/k8s-pilot-demo/k8s/helm/demo-chart
       run: |
-        helm upgrade --install demo-chart ./k8s-pilot-demo/k8s/helm/demo-chart \
+        helm upgrade --install demo-chart . \
         --namespace demo --create-namespace \
         --set image.repository=${{ env.REGISTRY }}/demo-app \
-        --set image.tag=05965dcb5f816499d043aab198266ef95430ba93
+        --set image.tag=${ env.GITHUB_SHA }
 
 
     - name: Verify chart path
