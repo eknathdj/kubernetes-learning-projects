@@ -1,0 +1,38 @@
+name: CI CD AKS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Azure ACR login
+      run: az acr login --name ${{ env.ACR_NAME }}
+      env:
+        ACR_NAME: ${{ secrets.ACR_NAME }}
+
+    - name: Build and push backend image
+      run: |
+        ACR_LOGIN=$(az acr show -n ${{ secrets.ACR_NAME }} -g ${{ secrets.AZ_RG }} --query loginServer -o tsv)
+        docker build -t $ACR_LOGIN/guestbook-backend:${{ github.sha }} apps/backend
+        docker push $ACR_LOGIN/guestbook-backend:${{ github.sha }}
+      env:
+        AZURE_ACCESS_TOKEN: ${{ steps.login.outputs.accessToken }}
+
+    - name: Set kubectl context
+      run: az aks get-credentials -g ${{ secrets.AZ_RG }} -n ${{ secrets.AKS_NAME }} --overwrite-existing
+
+    - name: Update k8s deployment image
+      run: |
+        ACR_LOGIN=$(az acr show -n ${{ secrets.ACR_NAME }} -g ${{ secrets.AZ_RG }} --query loginServer -o tsv)
+        kubectl set image deployment/guestbook-backend backend=$ACR_LOGIN/guestbook-backend:${{ github.sha }} -n default
+        kubectl set image deployment/guestbook-frontend frontend=$ACR_LOGIN/guestbook-frontend:${{ github.sha }} -n default
