@@ -1,0 +1,12 @@
+replicaCount: 3
+image:
+  repository: nginx
+  tag: 1.23
+service:
+  type: ClusterIP
+  port: 80
+ingress:
+  enabled: false
+  host: demo.example.com
+  className: nginx
+  annotations: {}

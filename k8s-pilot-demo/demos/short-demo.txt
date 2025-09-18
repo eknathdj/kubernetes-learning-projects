@@ -1,0 +1,7 @@
+Suggested 60-90s demo recording steps:
+1. Show `kubectl get nodes -o wide`
+2. Deploy the Helm chart: `helm upgrade --install demo k8s/helm/demo-chart -n demo --create-namespace`
+3. Show pods: `kubectl get pods -n demo`
+4. Show logs: `kubectl logs -l app=demo -n demo --tail=20`
+5. Update image tag via `kubectl set image` and show `kubectl rollout status`
+6. Rollback with `kubectl rollout undo` if needed
