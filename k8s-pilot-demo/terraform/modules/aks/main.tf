@@ -1,15 +1,9 @@
 variable "resource_group_name" { type = string }
 variable "location" { type = string }
 variable "cluster_name" { type = string }
-variable "vnet_subnet_id" { type = string }
-variable "acr_id" { type = string }
-variable "node_count" { 
-    type = number 
-    default = 2 
-}
-variable "node_vm_size" { 
-    type = string 
-    default = "Standard_DS2_v2" 
+variable "node_count" {
+  type    = number
+  default = 2
 }
 
 data "azurerm_client_config" "current" {}
@@ -21,9 +15,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
   dns_prefix          = var.cluster_name
 
   default_node_pool {
-    name       = "agentpool"
-    vm_size    = var.node_vm_size
-    node_count = var.node_count
+    name           = "agentpool"
+    vm_size        = var.node_vm_size
+    node_count     = var.node_count
     vnet_subnet_id = var.vnet_subnet_id
   }
 
@@ -56,6 +50,6 @@ output "cluster_name" {
 }
 
 output "kube_admin_config_raw" {
-  value = azurerm_kubernetes_cluster.aks.kube_admin_config_raw
+  value     = azurerm_kubernetes_cluster.aks.kube_admin_config_raw
   sensitive = true
 }

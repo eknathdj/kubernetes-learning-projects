@@ -3,8 +3,9 @@
 terraform {
   backend "azurerm" {
     resource_group_name  = "tfstate-rg"
-    storage_account_name = "tfstateacct"
+    storage_account_name = "tfstateacct199"
     container_name       = "tfstate"
     key                  = "k8s-pilot-demo.terraform.tfstate"
   }
 }
+
