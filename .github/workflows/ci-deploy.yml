@@ -56,13 +56,23 @@ jobs:
       run: |
         curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+    - name: Set working directory
+      run: |
+        pwd
+        ls -la
+        ls -la k8s/helm/demo-chart
 
-    - name: Deploy with Helm
+    - name: Helm Deploy
+      working-directory: ${{ github.workspace }}
       run: |
         helm upgrade --install demo-chart ./k8s/helm/demo-chart \
           --namespace demo --create-namespace \
           --set image.repository=${{ env.REGISTRY }}/demo-app \
           --set image.tag=05965dcb5f816499d043aab198266ef95430ba93
+
+    - name: Verify chart path
+      run: |
+        test -f ./k8s/helm/demo-chart/Chart.yaml && echo "Chart found" || echo "Chart missing"
 
 
     - name: Run smoke test
