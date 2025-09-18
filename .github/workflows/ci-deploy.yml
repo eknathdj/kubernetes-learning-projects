@@ -68,7 +68,7 @@ jobs:
         helm upgrade --install demo-chart . \
         --namespace demo --create-namespace \
         --set image.repository=${{ env.REGISTRY }}/demo-app \
-        --set image.tag=${ env.GITHUB_SHA }
+        --set image.tag=${{ github.sha }}
 
 
     - name: Verify chart path
