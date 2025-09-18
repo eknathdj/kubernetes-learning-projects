@@ -26,11 +26,13 @@ jobs:
         username: ${{ secrets.REGISTRY_USER }}
         password: ${{ secrets.REGISTRY_PASS }}
 
-    - name: Build and push image
+    - name: Build and push image (buildx)
       uses: docker/build-push-action@v4
       with:
+        context: ./k8s-pilot-demo/app       
+        file: ./k8s-pilot-demo/app/Dockerfile
         push: true
-        tags: ${{ env.REGISTRY }}/demo-app:${{ github.sha }}
+        tags: ${{ secrets.ACR_LOGIN_SERVER }}/demo-app:${{ github.sha }}
 
     - name: Trivy Scan
       uses: aquasecurity/trivy-action@0.28.0
